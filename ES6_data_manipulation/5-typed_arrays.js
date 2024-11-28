@@ -4,7 +4,7 @@ const createInt8TypedArray = (length, position, value) => {
 	const buffer = new ArrayBuffer(length);
 	const data = new DataView(buffer);
 
-	if (position > length - 1) {
+	if (position >= length) {
 		throw new Error('Position outside range');
 	}
 
