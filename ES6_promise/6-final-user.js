@@ -1,12 +1,17 @@
-import signUpUser from './4-user-promise.js';
-import uploadPhoto from './5-photo-reject.js';
+// promises are all settled it should return an array with the following structure
 
-export default function handleProfileSignup(firstName, lastName, fileName) {
-  return Promise.allSettled([
-    signUpUser(firstName, lastName),
-    uploadPhoto(fileName),
-  ]).then((results) => results.map((result) => ({
-    status: result.status,
-    value: result.status === 'fulfilled' ? result.value : result.reason,
-  })));
+import signUpUser from './4-user-promise';
+import uploadPhoto from './5-photo-reject';
+
+export default async function handleProfileSignup(firstName, lastName, fileName) {
+  const user = await signUpUser(firstName, lastName);
+  let photo = null;
+  try {
+    photo = await uploadPhoto(fileName);
+  } catch (err) {
+    photo = `${err.name}: ${err.message}`;
+  }
+  const prom1 = { status: 'fulfilled', value: user };
+  const prom2 = { status: 'rejected', value: photo };
+  return [prom1, prom2];
 }
