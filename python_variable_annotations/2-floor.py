@@ -3,6 +3,7 @@
 
 import math
 
+
 def floor(n: float) -> int:
     """
     type_annotated function take a float and return a float
